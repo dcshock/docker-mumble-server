@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:raring
 MAINTAINER Matt Conroy matt@conroy.cc
 
 # Upgrade the build and include the universe repo.
@@ -7,7 +7,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 
 # Install the mumble dependencies
-RUN apt-get install -y libicu48 libterm-readline-perl-perl
+RUN apt-get install -y libterm-readline-perl-perl
 RUN apt-get install -y openssh-server mumble-server
 RUN mkdir -p /var/run/sshd
 
@@ -17,10 +17,7 @@ RUN mkdir -p /var/log/supervisor
 RUN locale-gen en_US en_US.UTF-8
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Hack for initctl
-# See: https://github.com/dotcloud/docker/issues/1024
-RUN dpkg-divert --local --rename --add /sbin/initctl
-RUN ln -s /bin/true /sbin/initctl
+RUN useradd -m -p admin -r -s /bin/bash -g root admin
 
 # Make the ports available for SSH and Mumble.
 EXPOSE 22
