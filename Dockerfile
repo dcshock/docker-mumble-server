@@ -1,4 +1,4 @@
-FROM ubuntu:raring
+FROM ubuntu:13.10
 MAINTAINER Matt Conroy matt@conroy.cc
 
 # Upgrade the build and include the universe repo.
@@ -18,6 +18,7 @@ RUN locale-gen en_US en_US.UTF-8
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN useradd -m -p admin -r -s /bin/bash -g root admin
+RUN echo "admin:admin" | chpasswd 
 
 # Make the ports available for SSH and Mumble.
 EXPOSE 22
