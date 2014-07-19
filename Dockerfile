@@ -8,7 +8,7 @@ RUN apt-get upgrade -y
 
 # Install the mumble dependencies
 RUN apt-get install -y libterm-readline-perl-perl
-RUN apt-get install -y openssh-server mumble-server
+RUN apt-get install -y openssh-server mumble-server sudo
 RUN mkdir -p /var/run/sshd
 
 # Install supervisor
@@ -19,6 +19,7 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN useradd -m -p admin -r -s /bin/bash -g root admin
 RUN echo "admin:admin" | chpasswd 
+RUN sudo adduser admin sudo
 
 # Make the ports available for SSH and Mumble.
 EXPOSE 22
